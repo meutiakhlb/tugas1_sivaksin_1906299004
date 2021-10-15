@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ubah Pasien berhasil</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+<body>
+<style>
+    .teks{
+        font-size: 50px;
+        padding-top: 10%;
+        text-align: center;
+        padding-left: 7%;
+        padding-right: 7%;
+    }
+</style>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="text-center">
+    <h2 class="teks" th:text="'Pasien dengan nama ' + ${namaPasien} + ' berhasil diubah'"></h2>
+    <a th:href="@{/pasien/}" >Kembali ke Daftar Pasien</a>
+</div>
+</body>
+</html>

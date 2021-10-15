@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Home</title>
+    <object th:include="fragments/fragment :: css " th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js " th:remove="tag"></object>
+</head>
+<style>
+    .judul{
+        text-align: center;
+        margin-top: 100px;
+        padding: 7%;
+        background-color: #264a74;
+        color: white;
+        border-radius: 10px;
+        font-size: 45px;
+    }
+
+    .button{
+        color: white;
+        text-align: center;
+        padding: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        border-radius: 10px;
+        padding-left: 30px;
+        padding-right: 30px;
+        background-color: #264a74;
+    }
+    .tulisan{
+        text-align: center;
+        font-size: 30px;
+        margin-bottom: 3%;
+    }
+
+</style>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="container-fluid">
+    <h2 class="judul"> Selamat datang di SIVAKSIN! </h2>
+    <br><br>
+    <h3 class="tulisan"> Daftar Fitur cari:</h3>
+    <div class="text-center">
+        <a th:href="@{/cari/faskes/vaksin}" class="button text-light"> Search Faskes By Vaksin </a>
+        <a th:href="@{/cari/pasien/}" class="button text-light"> Search Pasien By Jenis Vaksin and/or Faskes</a>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <title>PergiPergi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"></head>
+<body>
+<div class="container">
+    <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <div th:if="${pasien != null}">
+                    <h2>Update Pasien</h2>
+                    <br>
+                    <form th:action="@{/pasien/ubah}" th:object="${pasien}" method="POST">
+
+                        <input type="hidden" th:field="*{idPasien}" />
+
+                        Nama Pasien : <br>
+                        <input class="form-control" type="text" name="namaPasien" th:value="*{namaPasien}"/>
+                        <br><br>
+
+                        NIK: <br>
+                        <input class="form-control" type="text" name="nik" th:value="*{nik}"/>
+                        <br><br>
+
+                        Nomor Telepon: <br>
+                        <input class="form-control" type="text" name="nomorTelepon" th:value="*{nomorTelepon}"/>
+                        <br><br>
+
+                        Jenis Kelamin : <br>
+                        <select name="jenisKelamin">
+                            <option value="0">Perempuan</option>
+                            <option value="1">Laki-laki</option>
+                        </select>
+                        <br><br>
+
+                        Tanggal Lahir : <br>
+                        <input required class="form-control" type="datetime-local" name="tanggalLahir" th:value="*{tanggalLahir}"/>
+                        <br><br>
+
+                        Tempat Lahir : <br>
+                        <input required class="form-control" type="text" name="tempatLahir" th:value="*{tempatLahir}"/>
+                        <br><br>
+
+                        Pekerjaan : <br>
+                        <input required class="form-control" type="text" name="pekerjaan" th:value="*{pekerjaan}"/>
+                        <br><br>
+
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <a class="btn btn-primary" th:href="@{/pasien/}">Kembali</a>
+                    </form>
+                </div>
+                <div th:unless="${pasien != null}">
+                    <h2 th:text="${msg}"></h2>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

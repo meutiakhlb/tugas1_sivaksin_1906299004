@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title> SIVAKSIN </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFIBw8HfCJo="
+            crossorigin="anonymous"
+    ></script>
+    <script src="https://getbootstrap.com/docs/4.1/assets/js/vendor/popper.min.js"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="container mt-4">
+    <h5 class="card-title text-white text-center p-2" style="background-color: #264a74;">Tambah Faskes</h5>
+    <div class="card">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <br>
+                <form th:action="@{/faskes/add}" th:object="${faskes}" method="POST">
+                    Nama Faskes : <br>
+                    <input required class="form-control" type="text" name="namaFaskes"/>
+                    <br>
+
+                    Kuota : <br>
+                    <input required class="form-control" type="text" name="kuota"/>
+                    <br>
+
+                    Provinsi : <br>
+                    <input required class="form-control" type="text" name="provinsi"/>
+                    <br>
+
+                    Kabupaten : <br>
+                    <input required class="form-control" type="text" name="kabupaten"/>
+                    <br>
+
+                    Jam Mulai : <br>
+                    <input required class="form-control" type="time" name="jamMulai"/>
+                    <br>
+
+                    Jam Selesai : <br>
+                    <input required class="form-control" type="time" name="jamTutup"/>
+                    <br>
+
+                    Vaksin : <br>
+                    <select name="selectVaksin" th:field="*{vaksin}"
+                            class="form-control">
+                        <option th:each="vaksin : ${listVaksin}"
+                                th:text="${vaksin.jenisVaksin}"
+                                th:value="${vaksin.idVaksin}"></option>
+                    </select>
+                    <br>
+                    <div class="d-flex justify-content-end">
+                        <a class="btn btn-light text-black border border-dark" href="/">Cancel</a>
+                        <button class="btn btn-primary" type="submit" style="
+                                    background-color: #264a74;
+                                    margin-left: 20px;">
+                            Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

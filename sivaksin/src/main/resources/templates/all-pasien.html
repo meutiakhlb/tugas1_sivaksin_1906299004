@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View All Faskes</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+<style>
+    .layout{
+        text-align: center;
+        padding-top: 20px;
+        padding-left: 100px;
+        padding-right: 100px;
+    }
+
+    .button{
+        text-align: left;
+        margin-top: 80px;
+        margin-left: 100px;
+        color: white;
+    }
+
+    .judul{
+        background-color: #002752;
+        font-size: 27px;
+        color: white;
+        font-weight: 400;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+</style>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<section>
+    <td><a type="submit" class="btn btn-sm button" th:href="@{/pasien/add}" style="background-color: #264a74;">Tambah Pasien</a></td>
+    <div class="layout">
+        <div class="judul">Daftar Pasien</div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>NIK</th>
+                <th>Nomor Telepon</th>
+                <th>Jenis Kelamin</th>
+                <th>Tanggal Lahir</th>
+                <th>Tempat Lahir</th>
+                <th>Action</th>
+
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="pasien, iterationStatus : ${listPasienFaskes}">
+                <td th:text="${iterationStatus.count}"></td>
+                <td th:text="${pasien.namaPasien}"></td>
+                <td th:text="${pasien.nik}"></td>
+                <td th:text="${pasien.nomorTelepon}"></td>
+                <td th:if="${pasien.jenisKelamin == 0}">Jenis Kelamin : Perempuan</td>
+                <td th:if="${pasien.jenisKelamin == 1}">Jenis Kelamin : Laki-laki</td>
+                <td th:text="'Tanggal Lahir: ' + ${pasien.tanggalLahir}"></td>
+                <td th:text="'Tempat Lahir: ' + ${pasien.tempatLahir}"></td>
+
+                <td><a th:href="@{/pasien/}+${pasien.idPasien}" class="btn btn-outline-info">lihat</a></td>
+                <td><a th:href="@{/pasien/ubah/}+${pasien.idPasien}" class="btn btn-outline-secondary">Ubah</a></td>
+
+
+            </tr>
+            </tbody>
+        </table>
+
+        <br><br>
+        <a href="/">Kembali</a>
+
+    </div>
+</section>
+</body>
+</html>

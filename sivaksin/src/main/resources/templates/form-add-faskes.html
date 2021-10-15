@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Add Faskes</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+<body>
+<style>
+    .layout{
+        text-align: center;
+        padding-top: 50px;
+        padding-left: 450px;
+        padding-right: 450px;
+        padding-bottom: 50px;
+    }
+
+    .judul{
+        background-color: #002752;
+        font-size: 27px;
+        color: white;
+        font-weight: 400;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .isibox{
+        box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        padding-right: 7%;
+        padding-left: 7%;
+    }
+
+    .kanan{
+        text-align: right;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 7px 15px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+
+    .namafield{
+        text-align: left;
+        color: #4e555b;
+    }
+
+</style>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="layout">
+    <div class="judul">Tambah Faskes</div>
+    <div class="isibox">
+        <form th:action="@{/faskes/add}"th:object="${faskes}" method = "POST">
+            <div class="namafield">Nama Faskes</div>
+            <input required class="form-control"  type="text" name="namaFaskes"/>
+            <br>
+            <div class="namafield">Kuota</div>
+            <input required class="form-control"  type="text" name="kuota"/>
+            <br>
+            <div class="namafield">Provinsi</div>
+            <input required class="form-control" type="text" name="provinsi"/>
+            <br>
+            <div class="namafield">Kabupaten</div>
+            <input required class="form-control" type="text" name="kabupaten"/>
+            <br>
+            <div class="namafield">Jam Mulai</div>
+            <input required class="form-control" type="time" pattern="HH:mm" name="jamMulai"/>
+            <br>
+            <div class="namafield">Jam Tutup</div>
+            <input required class="form-control" type="time" pattern="HH:mm" name="jamTutup"/>
+            <br>
+            Vaksin : <br>
+            <select name="selectVaksin" th:field="*{vaksin}"
+                    class="form-control">
+                <option th:each="vaksin : ${listVaksin}"
+                        th:text="${vaksin.jenisVaksin}"
+                        th:value="${vaksin.idVaksin}"></option>
+            </select>
+            <br><br>
+            <div class="kanan">
+                <a th:href="@{/faskes/}" class="btn" style="border-color: #002752"> Batal </a>
+                <button type="submit" class="btn text-light" style="background-color: #002752">Tambah</button>
+            </div>
+            <br><br>
+        </form>
+    </div>
+</div>
+</body>
+</html>

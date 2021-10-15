@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <title>PergiPergi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"></head>
+<body>
+<div class="container">
+    <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <div th:if="${faskes != null}">
+                    <h2>Update Faskes</h2>
+                    <br>
+                    <form th:action="@{/faskes/ubah}" th:object="${faskes}" method="POST">
+
+                        <input type="hidden" th:field="*{idFaskes}" />
+
+                        Nama Faskes : <br>
+                        <input class="form-control" type="text" name="namaFaskes" th:value="*{namaFaskes}"/>
+                        <br><br>
+
+                        Kuota: <br>
+                        <input class="form-control" type="text" name="kuota" th:value="*{kuota}"/>
+                        <br><br>
+
+                        Provinsi: <br>
+                        <input class="form-control" type="text" name="provinsi" th:value="*{provinsi}"/>
+                        <br><br>
+
+                        Kabupaten : <br>
+                        <input required class="form-control" type="text" name="kabupaten" th:value="*{kabupaten}"/>
+                        <br><br>
+
+                        Jam Mulai : <br>
+                        <input required class="form-control" type="time" name="jamMulai" th:value="*{jamMulai}"/>
+                        <br><br>
+
+                        Jam Selesai : <br>
+                        <input required class="form-control" type="time" name="jamTutup" th:value="*{jamTutup}"/>
+                        <br><br>
+
+                        Vaksin : <br>
+                        <select name="selectVaksin" th:field="*{vaksin}"
+                                class="form-control">
+                            <option th:each="vaksin : ${listVaksin}"
+                                    th:text="${vaksin.jenisVaksin}"
+                                    th:value="${vaksin.idVaksin}"></option>
+                        </select>
+
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <a class="btn btn-primary" th:href="@{/faskes/}">Kembali</a>
+                    </form>
+                </div>
+                <div th:unless="${faskes != null}">
+                    <h2 th:text="${msg}"></h2>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cari Faskes</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+<style>
+    .judul{
+        text-align: center;
+        background-color: #002752;
+        font-size: 27px;
+        color: white;
+        font-weight: 400;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+</style>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+
+<div class="container">
+
+    <table class="table">
+        <form th:action="@{/cari/pasien/}" method="GET">
+            <thead>
+            <tr>
+                <td> Pilih Jenis Vaksin </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <select name="jenisVaksin">
+                            <option value="">--Pilih Jenis Vaksin--</option>
+                            <option th:each="vaksin : ${listVaksin}" th:text="${vaksin.jenisVaksin}" th:value="${vaksin.jenisVaksin}"></option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <select name="namaFaskes">
+                            <option value="">--Pilih Faskes--</option>
+                            <option th:each="faskes : ${listFaskes}" th:text="${faskes.namaFaskes}" th:value="${faskes.namaFaskes}"></option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <button class="btn btn-primary text-white" type="submit"> Cari </button>
+                </td>
+            </tr>
+            </tbody>
+        </form>
+    </table>
+    <div class="judul">Daftar Pasien Berdasarkan Vaksin dan Faskes</div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <td> No </td>
+            <td> Nama </td>
+            <td> NIK </td>
+            <td> Nomor Telepon</td>
+            <td> Jenis Kelamin</td>
+            <td> Batch ID</td>
+            <td> Waktu Suntik</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="result, iterationStatus : ${listPasien}">
+            <td th:text="${iterationStatus.count}"></td>
+            <td th:text="${result[0]}"></td>
+            <td th:text="${result[1]}"></td>
+            <td th:text="${result[2]}"></td>
+            <td th:text="${result[3]}"></td>
+            <td th:text="${result[4]}"></td>
+            <td th:text="${result[5]}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Pilot by NIP</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <style>
+        .container {
+        display:flex;,
+        flex-direction: row;}
+    </style>
+</head>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="mt-4">
+    <h5 class="card-title text-white text-center p-2" style="background-color: #264a74;">Detail Pasien</h5>
+    <div class="card p-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <table class="table table-borderless">
+                    <thead>
+                    <tr>
+                        <th></th><th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Nama Pasien</td>
+                        <td th:text="':  ' + ${pasien.namaPasien}"></td>
+                    </tr>
+                    <tr>
+                        <td>NIK</td>
+                        <td th:text="':  ' + ${pasien.nik}"></td>
+                    </tr>
+                    <tr>
+                        <td>Nomor Telepon</td>
+                        <td th:text="':  ' + ${pasien.nomorTelepon}"></td>
+                    </tr>
+                    <tr>
+                        <td>Jenis Kelamin</td>
+                        <td th:if="${pasien.jenisKelamin} == 0" th:text="': Laki-Laki'"></td>
+                        <td th:if="${pasien.jenisKelamin} == 1" th:text="': Perempuan'"></td>
+                    </tr>
+                    <tr>
+                        <td>Tanggal Lahir</td>
+                        <td th:text="':  ' + ${birthDate}"></td>
+                    </tr>
+                    <tr>
+                        <td>Tempat Lahir</td>
+                        <td th:text="':  ' + ${pasien.tempatLahir}"></td>
+                    </tr>
+                    <tr>
+                        <td>Pekerjaan</td>
+                        <td th:text="':  ' + ${pasien.pekerjaan}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-center">
+                <a class="btn btn-sm btn-primary" th:href="@{ubah/} + ${pasien.idPasien}" style="margin-right: 10px;">Ubah</a>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="mt-2">
+        <h5 class="card-title text-white text-center p-2" style="background-color: #264a74;">Daftar Vaksinasi</h5>
+        <div class="card p-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-center">
+                    <table class="table">
+                        <thead>
+                        <tr style="color: #264a74;" class="text-center">
+                            <th>No</th>
+                            <th>Nama Faskes</th>
+                            <th>Vaksin</th>
+                            <th>Batch ID</th>
+                            <th>Waktu Suntik</th>
+                            <th>Nama Dokter</th>
+                            <th>NIP Dokter</th>
+                            <th>No Telepon Dokter</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="v, iterationStatus : ${listVaksinasi}" class="text-center">
+                            <td th:text="${iterationStatus.count}"></td>
+                            <td th:text="${v[0]}"></td>
+                            <td th:text="${v[1]}"></td>
+                            <td th:text="${v[2]}" style="color: #264a74; font-weight: 600;"></td>
+                            <td th:text="${v[3]}"></td>
+                            <td th:text="${v[4]}"></td>
+                            <td th:text="${v[5]}"></td>
+                            <td th:text="${v[6]}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <a href="/">Kembali</a>
+</div>
+</body>
+</html>

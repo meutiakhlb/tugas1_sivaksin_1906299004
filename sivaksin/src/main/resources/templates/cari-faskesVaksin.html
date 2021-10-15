@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cari Faskes</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+<style>
+    .judul{
+        text-align: center;
+        background-color: #002752;
+        font-size: 27px;
+        color: white;
+        font-weight: 400;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+</style>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+
+<div class="container">
+
+    <table class="table">
+        <form th:action="@{/cari/faskes/vaksin}" method="GET">
+            <thead>
+            <tr>
+                <td> Pilih Jenis Vaksin </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <select name="namaVaksin">
+                            <option value="">--Pilih Jenis Vaksin--</option>
+                            <option th:each="vaksin : ${listVaksin}" th:text="${vaksin.jenisVaksin}" th:value="${vaksin.jenisVaksin}"></option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <button class="btn btn-primary text-white" type="submit"> Cari </button>
+                </td>
+            </tr>
+            </tbody>
+        </form>
+    </table>
+    <div class="judul">Daftar Faskes Berdasarkan Vaksin</div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <td> No </td>
+            <td> Nama </td>
+            <td> Kuota</td>
+            <td> Provinsi</td>
+            <td> Kabupaten</td>
+            <td> Jam Mulai</td>
+            <td> Jam Selesai</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="faskes, iterationStatus : ${listFaskes}">
+            <td th:text="${iterationStatus.count}"></td>
+            <td th:text="${faskes.namaFaskes}"></td>
+            <td th:text="${faskes.kuota}"></td>
+            <td th:text="${faskes.provinsi}"></td>
+            <td th:text="${faskes.kabupaten}"></td>
+            <td th:text="${faskes.jamMulai}"></td>
+            <td th:text="${faskes.jamTutup}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+
+</div>
+</body>
+</html>
