@@ -33,4 +33,16 @@ public class VaksinServiceImpl implements VaksinService{
         else return null;
     }
 
+    @Override
+    public  VaksinModel getVaksinByNama(String jenisVaksin){
+        List<VaksinModel> allVaksin = getListVaksin();
+        for(VaksinModel vaksin: allVaksin) {
+            if (vaksin.getJenisVaksin().equalsIgnoreCase(jenisVaksin)) {
+                return vaksin;
+
+            }
+        }
+        return null;
+    }
+
 }

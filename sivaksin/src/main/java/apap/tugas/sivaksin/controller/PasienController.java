@@ -44,8 +44,28 @@ public class PasienController {
     @GetMapping("/pasien")
     public String viewAllPasien(Model model) {
         List<PasienModel> pasien = pasienService.getListPasien();
+
+        List<List<String>> result = new ArrayList<>();
+        for(PasienModel pasienM : pasien){
+            List<String> data = new ArrayList<>();
+            data.add(pasienM.getNamaPasien());
+            data.add(pasienM.getNik());
+            data.add(pasienM.getNomorTelepon());
+            if(pasienM.getJenisKelamin() == 0){
+                data.add("Perempuan");
+            } else {
+                data.add("Laki-Laki");
+            }
+            data.add(pasienService.findTanggalLahir(pasienM.getTanggalLahir()));
+            data.add(pasienM.getTempatLahir());
+            data.add(pasienM.getPekerjaan());
+            result.add(data);
+
+
+        }
+
         model.addAttribute("listPasienFaskes", pasien);
-        return "all-pasien";
+        return "all-pasien2";
     }
 
     @GetMapping("/pasien/add")
@@ -81,6 +101,7 @@ public class PasienController {
         birth+= " " + Integer.toString(tanggalLahir.getYear());
         birth+= "," + String.format("%02d", tanggalLahir.getHour());
         birth+=":" +String.format("%02d", tanggalLahir.getMinute());
+
         List<List<String>> listResult = new ArrayList<>();
         List <DokterPasienModel> listDP = pasien.getListDokterPasien();
         for(DokterPasienModel DP: listDP) {
@@ -112,7 +133,7 @@ public class PasienController {
         model.addAttribute("pasien", pasien);
         model.addAttribute("birthDate",birth);
         model.addAttribute("listVaksinasi", listResult);
-        return "detail-pasien";
+        return "detail-pasien2";
     }
 
     @GetMapping("/pasien/ubah/{idPasien}")
@@ -140,6 +161,8 @@ public class PasienController {
         model.addAttribute("namaPasien", updatedPasien.getNamaPasien());
         return "update-pasien";
     }
+
+
 
 
 }

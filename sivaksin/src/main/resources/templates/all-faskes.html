@@ -18,7 +18,7 @@
         text-align: left;
         margin-top: 80px;
         margin-left: 100px;
-        color: white;
+        color: black;
     }
 
     .judul{
@@ -33,11 +33,13 @@
 <body>
 <nav th:replace="fragments/fragment :: navbar"></nav>
 <section>
-    <td><a type="submit" class="btn btn-sm button" th:href="@{/faskes/add}" style="background-color: #117a8b">+Tambah Faskes</a></td>
+    <td><a type="submit" class="btn btn-sm button" id= "button"
+           style="text-align: center; background-color:#244c74; color: white; margin: 1%;padding: 15px; padding-left: 3%; padding-right: 3%; font-size: 100%"
+           th:href="@{/faskes/add}">+Tambah Faskes</a></td>
     <div class="layout">
         <div class="judul">Daftar Faskes</div>
 
-        <table class="table">
+        <table class="table text-center table-borderless">
             <thead>
             <tr>
                 <th>No</th>

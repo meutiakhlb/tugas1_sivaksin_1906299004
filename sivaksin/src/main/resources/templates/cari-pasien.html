@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title> SIVAKSIN </title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+<style>
+    table{
+        border-collapse: collapse;
+        border: none;
+    }
+    td{
+        border: none;
+    }
+    .info{
+        border-color: #244c74;
+    }
+</style>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="container-fluid">
+    <br>
+    <table class="table">
+        <form class="form-inline my-2 my-lg-0" th:action="@{/cari/pasien}"  method="GET">
+            <thead>
+            <tr>
+                <td> Pilih Jenis Vaksin</td>
+                <td> Pilih Faskes</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <select class="selectpicker" th:name="jenisVaksin">
+                            <option value="">--Pilih Jenis Vaksin--</option>
+                            <option th:each="vaksin : ${listVaksin}" th:text="${vaksin.jenisVaksin}" th:value="${vaksin.jenisVaksin}"></option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <select class="selectpicker" th:name="namaFaskes">
+                            <option value="">--Pilih Faskes--</option>
+                            <option th:each="faskes : ${listFaskes}" th:text="${faskes.namaFaskes}" th:value="${faskes.namaFaskes}"></option>
+                        </select>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit" style="float: right">Cari</button>
+                </td>
+            </tr>
+            </tbody>
+        </form>
+    </table>
+    <section>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" style="background-color: white; box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);">
+                    <div class="card-header" style="text-align: center; font-weight: bold; color: white; background-color: #244c74;">
+                        <h4> Daftar Pasien Berdasarkan Jenis Vaksin dan Faskes</h4>
+                    </div>
+                    <div class="card-body" style="overflow-x: auto">
+                        <table class="table">
+                            <thead style="background-color: #f5f5f5">
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>NIK</th>
+                                <th>Nomor Telepon</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Batch ID</th>
+                                <th>Waktu Suntik</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="pasien, iterationStatus : ${listPasien}">
+                                <td th:text="${iterationStatus.count}"></td>
+                                <td th:text="${pasien[0]}"></td>
+                                <td th:text="${pasien[1]}"></td>
+                                <td th:text="${pasien[2]}"></td>
+                                <td th:text="${pasien[3]}"></td>
+                                <td th:text="${pasien[4]}"></td>
+                                <td th:text="${pasien[5]}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <div class="container-fluid">
+            <div style="text-align: right">
+                <a class="btn btn-sm" style="text-align: center;background-color: #244c74; color: white; padding: 1%; font-size: medium" th:href="@{/}">Kembali</a>
+            </div>
+        </div>
+    </section>
+</div>
+<footer th:replace="fragments/fragment :: footer"></footer>
+</body>
+</html>

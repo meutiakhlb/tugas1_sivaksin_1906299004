@@ -23,7 +23,13 @@ public interface FaskesService {
 
     List<FaskesModel> findFaskesByVaksin(String jenisVaksin);
 
-    List<FaskesModel> findFaskesByNama(String namaFaskes);
+    List<FaskesModel> findFaskesById(Long idFaskes);
+
+    FaskesModel getFaskesByNamaFaskes(String namaFaskes);
+
+    boolean terhubungFaskesVaksin(FaskesModel faskes, VaksinModel vaksin);
+
+    List<Integer> getSumPasienBulanIni(List<FaskesModel> listFaskes);
 
 //    FaskesModel getFaskesByNama(String namaFaskes);
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -17,19 +18,19 @@ public class PasienServiceImpl implements PasienService {
     PasienDb PasienDb;
 
     @Override
-    public void addPasien(PasienModel Pasien){
+    public void addPasien(PasienModel Pasien) {
         PasienDb.save(Pasien);
     }
 
     @Override
-    public List<PasienModel> getListPasien(){
+    public List<PasienModel> getListPasien() {
         return PasienDb.findAll();
     }
 
     @Override
     public PasienModel getPasienById(Long idPasien) {
         Optional<PasienModel> pasien = PasienDb.findByIdPasien(idPasien);
-        if(pasien.isPresent()) return pasien.get();
+        if (pasien.isPresent()) return pasien.get();
         else return null;
     }
 
@@ -44,75 +45,27 @@ public class PasienServiceImpl implements PasienService {
         return Pasien;
     }
 
+
     @Override
-    public List<PasienModel> cariPasienByVaksinFaskes(String jenisVaksin, String namaFaskes, List<FaskesModel> faskes){
-        List<FaskesModel> result = new ArrayList<>();
-        int count = 0;
-        List<PasienModel> resultPasien = new ArrayList<>();
-        for(FaskesModel faskesmodel : faskes){
-            if(faskesmodel.getVaksin().getJenisVaksin().equalsIgnoreCase(jenisVaksin)){
-                if(faskesmodel.getNamaFaskes().equalsIgnoreCase(namaFaskes)){
-                    result.add(faskesmodel);
-                }
-
+    public List<PasienModel> getPasienListBulanIni(List<PasienModel> listPasien) {
+        List<PasienModel> listUniquePasien = new ArrayList<>();
+        for (PasienModel pasien : listPasien) {
+            if (!listUniquePasien.contains(pasien)) {
+                listUniquePasien.add(pasien);
+            } else {
             }
         }
-
-        for(FaskesModel faskesM : result) {
-            for(PasienModel pasien : faskesM.getListFaskesPasien()){
-                System.out.println(count++);
-                resultPasien.add(pasien);
-            }
-        }
-        System.out.println(resultPasien);
-        return resultPasien;
-
-
-
+        return listUniquePasien;
     }
 
     @Override
-    public List<PasienModel> cariPasienVaksin(String jenisVaksin, List<FaskesModel> faskes) {
-            List<FaskesModel> result = new ArrayList<>();
-            int count = 0;
-            List<PasienModel> resultPasien = new ArrayList<>();
-            for(FaskesModel faskesModel : faskes) {
-                if(faskesModel.getVaksin().getJenisVaksin().equalsIgnoreCase(jenisVaksin)){
-                    result.add(faskesModel);
-                }
-            }
-
-            for(FaskesModel faskesM : result){
-                for(PasienModel pasien : faskesM.getListFaskesPasien()){
-                    System.out.println(count++);
-                    resultPasien.add(pasien);
-                }
-            }
-            System.out.println(resultPasien);
-            return resultPasien;
-
+    public  String findTanggalLahir(LocalDateTime lahir) {
+        LocalDateTime tanggalLahir = lahir;
+        String birth = "";
+        birth+= "," + Integer.toString(tanggalLahir.getDayOfMonth());
+        birth+=" "+tanggalLahir.getMonth().toString().substring(0,1);
+        birth+=tanggalLahir.getMonth().toString().substring(1).toLowerCase();
+        birth+= " " + Integer.toString(tanggalLahir.getYear());
+        return birth;
     }
-
-    @Override
-    public List<PasienModel> cariPasienFaskes(String namaFaskes, List<FaskesModel> faskes) {
-        List<FaskesModel> result = new ArrayList<>();
-        int count = 0;
-        List<PasienModel> resultPasien = new ArrayList<>();
-        for(FaskesModel faskesModel : faskes) {
-            if(faskesModel.getNamaFaskes().equalsIgnoreCase(namaFaskes)){
-                result.add(faskesModel);
-            }
-        }
-
-        for(FaskesModel faskesM : result){
-            for(PasienModel pasien : faskesM.getListFaskesPasien()){
-                System.out.println(count++);
-                resultPasien.add(pasien);
-            }
-        }
-        System.out.println(resultPasien);
-        return resultPasien;
-
-    }
-
 }

@@ -18,7 +18,7 @@
     </head>
 
 <body>
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar navbar-dark" STYLE="background-color: #002752">
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar navbar-dark" STYLE="background-color: #264a74">
     <a th:text="SIVAKSIN" class="navbar-brand font-weight-bold text-white" th:href="@{/}"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,8 +38,8 @@
                     Cari
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="@{/cari/faskes/vaksin}">Cari Faskes Berdasarkan Jenis Vaksin</a>
-                    <a class="dropdown-item" href="@{/cari/pasien/}">Berdasarkan Jenis Vaksin dan Faskes </a>
+                    <a class="dropdown-item" th:href="@{/cari/faskes/vaksin}">Cari Faskes Berdasarkan Jenis Vaksin</a>
+                    <a class="dropdown-item" th:href="@{/cari/pasien/}">Berdasarkan Jenis Vaksin dan Faskes </a>
             </li>
             <li>
                 <a class="nav-item nav-link active" th:href="@{/cari/jumlah-pasien/bulan-ini}">Bonus</a>
@@ -50,5 +50,11 @@
 
 </nav>
 </body>
+<footer th:fragment="footer">
+    <div class="footer">
+        <br><br>
+        <p style="text-align: center" th:text="'Made by Meutia'"></p>
+    </div>
+</footer>
 
 </html>

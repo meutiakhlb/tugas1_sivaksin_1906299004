@@ -14,5 +14,6 @@ public interface VaksinService {
 
     VaksinModel getVaksinById(Long idVaksin);
 
+    VaksinModel getVaksinByNama(String jenisVaksin);
 
 }

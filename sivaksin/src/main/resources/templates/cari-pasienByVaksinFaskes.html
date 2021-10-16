@@ -27,14 +27,14 @@
         <form th:action="@{/cari/pasien/}" method="GET">
             <thead>
             <tr>
-                <td> Pilih Jenis Vaksin </td>
+                <td> Pilih Jenis Vaksin dan Faskes</td>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <td>
                     <div>
-                        <select name="jenisVaksin">
+                        <select class="selectpicker" th:name="jenisVaksin">
                             <option value="">--Pilih Jenis Vaksin--</option>
                             <option th:each="vaksin : ${listVaksin}" th:text="${vaksin.jenisVaksin}" th:value="${vaksin.jenisVaksin}"></option>
                         </select>
@@ -42,7 +42,7 @@
                 </td>
                 <td>
                     <div>
-                        <select name="namaFaskes">
+                        <select class="selectpicker" th:name="namaFaskes">
                             <option value="">--Pilih Faskes--</option>
                             <option th:each="faskes : ${listFaskes}" th:text="${faskes.namaFaskes}" th:value="${faskes.namaFaskes}"></option>
                         </select>
@@ -70,19 +70,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="result, iterationStatus : ${listPasien}">
+        <tr th:each="pasien, iterationStatus : ${listPasien}">
             <td th:text="${iterationStatus.count}"></td>
-            <td th:text="${result[0]}"></td>
-            <td th:text="${result[1]}"></td>
-            <td th:text="${result[2]}"></td>
-            <td th:text="${result[3]}"></td>
-            <td th:text="${result[4]}"></td>
-            <td th:text="${result[5]}"></td>
+            <td th:text="${pasien[0]}"></td>
+            <td th:text="${pasien[1]}"></td>
+            <td th:text="${pasien[2]}"></td>
+            <td th:text="${pasien[3]}"></td>
+            <td th:text="${pasien[4]}"></td>
+            <td th:text="${pasien[5]}"></td>
         </tr>
         </tbody>
     </table>
-
-
 
 </div>
 </body>

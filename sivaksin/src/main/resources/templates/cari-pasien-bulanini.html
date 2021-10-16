@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <title>SiVaksin</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body class="bg-light">
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="container bg-white p-5 rounded mt-4" style="background-color: #264a74;">
+
+    <div class="content-card" >
+        <h3 class="w-100 bg-primary text-white text-center p-3">Daftar Jumlah Pasien Bulan Ini</h3>
+        <div th:if="*{listJumlahPasien.size() != 0}">
+            <table class="table text-center table-bordered">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Faskes</th>
+                    <th>Jumlah Pasien</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="faskes, iterationStatus : ${listFaskes}"
+                    th:class="${iterationStatus.even} ? 'bg-light'">
+                    <td th:text="${iterationStatus.count}"></td>
+                    <td th:text="${faskes.namaFaskes}"></td>
+                    <td th:text="${listJumlahPasien[__${iterationStatus.index}__]}"></td>
+                </tbody>
+            </table>
+        </div>
+        <div th:unless="*{listJumlahPasien.size() != 0}">
+            <h4>Tidak ada pasien yangh melakukan vaksinasi bulan ini.</h4>
+        </div>
+    </div>
+
+
+    <a class="btn btn-primary" href="/">Home</a>
+</div>
+</body>
+
+</html>

@@ -2,6 +2,7 @@ package apap.tugas.sivaksin.service;
 
 import apap.tugas.sivaksin.model.*;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 public interface PasienService {
@@ -16,10 +17,8 @@ public interface PasienService {
 
     PasienModel deleteFaskes(PasienModel Pasien);
 
-    List<PasienModel> cariPasienByVaksinFaskes(String jenisVaksin, String namaFaskes, List<FaskesModel> faskes);
+    List<PasienModel> getPasienListBulanIni(List<PasienModel> listPasien);
 
-    List<PasienModel> cariPasienVaksin(String jenisVaksin, List<FaskesModel> faskes);
-
-    List<PasienModel> cariPasienFaskes(String namaFaskes, List<FaskesModel> faskes);
+    String findTanggalLahir(LocalDateTime birth);
 
 }

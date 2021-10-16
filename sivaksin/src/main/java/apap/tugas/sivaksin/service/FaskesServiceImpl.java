@@ -19,6 +19,10 @@ public class FaskesServiceImpl implements FaskesService{
     @Autowired
     FaskesDb FaskesDb;
 
+    @Autowired
+    PasienService pasienService;
+
+
     @Override
     public void addFaskes(FaskesModel Faskes) {
         FaskesDb.save(Faskes);
@@ -34,6 +38,62 @@ public class FaskesServiceImpl implements FaskesService{
         Optional<FaskesModel> faskes = FaskesDb.findByIdFaskes(idFaskes);
         if(faskes.isPresent()) return faskes.get();
         else return null;
+    }
+
+    @Override
+    public FaskesModel getFaskesByNamaFaskes(String namaFaskes) {
+        List<FaskesModel> allFaskes = getListFaskes();
+        for(FaskesModel faskes: allFaskes) {
+            if (faskes.getNamaFaskes().equalsIgnoreCase(namaFaskes)) {
+               return faskes;
+
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public  boolean terhubungFaskesVaksin(FaskesModel faskes, VaksinModel vaksin){
+        FaskesModel faskesModel = getFaskesById(faskes.getIdFaskes());
+
+        if (faskesModel.getVaksin().equals(vaksin)) {
+            return true;
+        } else {
+            return false;
+        }
+
+
+
+    }
+
+    @Override
+    public List<Integer> getSumPasienBulanIni(List<FaskesModel> listFaskes) {
+        List<Integer> listJumlahPasien = new ArrayList<>();
+        Calendar cal = Calendar.getInstance();
+        int month = cal.get(Calendar.MONTH) + 1;
+        int year = cal.get(Calendar.YEAR);
+        int jumlahPasien = 0;
+
+        for (FaskesModel faskes:listFaskes) {
+            List<PasienModel> listPasien = pasienService.getPasienListBulanIni(faskes.getListFaskesPasien());
+            for (PasienModel pasien:listPasien) {
+                List<DokterPasienModel> listDokpas = pasien.getListDokterPasien();
+                for (DokterPasienModel dp :listDokpas) {
+                    if (dp.getWaktuSuntik().getMonthValue() == month && dp.getWaktuSuntik().getYear() == year) {
+                        jumlahPasien++;
+                        break;
+                    }
+                }
+
+
+            }
+            listJumlahPasien.add(jumlahPasien);
+            jumlahPasien = 0;
+        }
+        System.out.println(Arrays.deepToString(listFaskes.toArray()));
+        System.out.println(Arrays.deepToString(listJumlahPasien.toArray()));
+
+        return listJumlahPasien;
     }
 
 //    @Override
@@ -66,12 +126,13 @@ public class FaskesServiceImpl implements FaskesService{
         return hasilCariFaskes;
     }
 
+
     @Override
-    public List<FaskesModel> findFaskesByNama(String namaFaskes){
+    public List<FaskesModel> findFaskesById(Long idFaskes){
         List<FaskesModel> hasilCariFaskes = new ArrayList<>();
         List<FaskesModel> allFaskes = getListFaskes();
         for(FaskesModel faskes: allFaskes){
-            if(faskes.getNamaFaskes().equalsIgnoreCase(namaFaskes)){
+            if(faskes.getIdFaskes().equals(idFaskes)){
                 hasilCariFaskes.add(faskes);
 
             }

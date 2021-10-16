@@ -1,9 +1,7 @@
 package apap.tugas.sivaksin.service;
 
-import apap.tugas.sivaksin.model.DokterModel;
-import apap.tugas.sivaksin.model.DokterPasienModel;
-import apap.tugas.sivaksin.model.FaskesModel;
-import apap.tugas.sivaksin.model.PasienModel;
+import apap.tugas.sivaksin.model.*;
+import apap.tugas.sivaksin.service.*;
 import apap.tugas.sivaksin.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,6 +21,12 @@ public class DokterPasienServiceImpl implements DokterPasienService{
 
     @Autowired
     DokterPasienDb DokterPasienDb;
+
+    @Autowired
+    private PasienService pasienService;
+
+    @Autowired
+    private FaskesService faskesService;
 
     @Override
     public void addDokterPasien(DokterPasienModel DokterPasien){
@@ -72,84 +76,107 @@ public class DokterPasienServiceImpl implements DokterPasienService{
         return birth;
     }
 
-//    @Override
-//    public List<PasienModel> cariPasienByVaksinFaskes(String jenisVaksin, String namaFaskes, List<FaskesModel> faskes){
-//        List<FaskesModel> result = new ArrayList<>();
-//        int count = 0;
-//        List<PasienModel> resultPasien = new ArrayList<>();
-//        for(FaskesModel faskesmodel : faskes){
-//            if(faskesmodel.getVaksin().getJenisVaksin().equalsIgnoreCase(jenisVaksin)){
-//                if(faskesmodel.getNamaFaskes().equalsIgnoreCase(namaFaskes)){
-//                    result.add(faskesmodel);
-//                }
-//
-//            }
-//        }
-//
-//        for(FaskesModel faskesM : result) {
-//            for(PasienModel pasien : faskesM.getListFaskesPasien()){
-//                System.out.println(count++);
-//                resultPasien.add(pasien);
-//            }
-//        }
-//        System.out.println(resultPasien);
-//        return resultPasien;
-//
-//
-//
-//    }
-//
-//    @Override
-//    public List<PasienModel> cariPasienVaksin(String jenisVaksin, List<FaskesModel> faskes) {
-//        List<FaskesModel> result = new ArrayList<>();
-//        int count = 0;
-//        List<PasienModel> resultPasien = new ArrayList<>();
-//        for(FaskesModel faskesModel : faskes) {
-//            if(faskesModel.getVaksin().getJenisVaksin().equalsIgnoreCase(jenisVaksin)){
-//                result.add(faskesModel);
-//            }
-//        }
-//
-//        for(FaskesModel faskesM : result){
-//            for(PasienModel pasien : faskesM.getListFaskesPasien()){
-//                System.out.println(count++);
-//                resultPasien.add(pasien);
-//            }
-//        }
-//        System.out.println(resultPasien);
-//        return resultPasien;
-//
-//    }
-//
-//    @Override
-//    public List<PasienModel> cariPasienFaskes(String namaFaskes, List<FaskesModel> faskes) {
-//        List<FaskesModel> result = new ArrayList<>();
-//        int count = 0;
-//        List<PasienModel> resultPasien = new ArrayList<>();
-//        for(FaskesModel faskesModel : faskes) {
-//            if(faskesModel.getNamaFaskes().equalsIgnoreCase(namaFaskes)){
-//                result.add(faskesModel);
-//            }
-//        }
-//
-//        for(FaskesModel faskesM : result){
-//            for(PasienModel pasien : faskesM.getListFaskesPasien()){
-//                System.out.println(count++);
-//                resultPasien.add(pasien);
-//            }
-//        }
-//        System.out.println(resultPasien);
-//        return resultPasien;
-//
-//    }
-//
-//
-//
+    @Override
+    public List<DokterPasienModel> getAllByIdFaskes(Long idFaskes){
+        List<DokterPasienModel> dokter = new ArrayList<>();
+        List<DokterPasienModel> dokpas = getDokterPasienList();
+        for(DokterPasienModel db: dokpas){
+            if(db.getIdFaskes().equals(idFaskes)){
+                dokter.add(db);
+            }
+        }
+        return dokter;
+    }
+
+    @Override
+    public List<DokterPasienModel> getAllByIdPasien(Long idPasien){
+        List<DokterPasienModel> dokter = new ArrayList<>();
+        List<DokterPasienModel> dokpas = getDokterPasienList();
+        for(DokterPasienModel db: dokpas){
+            if(db.getPasienDP().getIdPasien().equals(idPasien)){
+                dokter.add(db);
+            }
+        }
+        return dokter;
+    }
+
+    @Override
+    public List<DokterPasienModel> getListCariPasien(Long idFaskes) {
+        List<DokterPasienModel> result = new ArrayList<>();
+        List<DokterPasienModel> dokpas = getAllByIdFaskes(idFaskes);
+        return dokpas;
+
+
+    }
+
+    @Override
+    public List<DokterPasienModel> getListPasienDariVaksin(VaksinModel vaksin){
+        List<DokterPasienModel> result = new ArrayList<>();
+        List<FaskesModel> listFaskesVak = faskesService.findFaskesByVaksin(vaksin.getJenisVaksin());
+        for(FaskesModel faskes : listFaskesVak){
+            List<DokterPasienModel> tempFaskes = getAllByIdFaskes(faskes.getIdFaskes());
+            for(DokterPasienModel dopas : tempFaskes){
+                result.add(dopas);
+            }
+
+        }
+        return result;
+    }
+
+    @Override
+    public List<DokterPasienModel> findPasienByFaskes(FaskesModel faskes){
+        List<DokterPasienModel> result = new ArrayList<>();
+        List<FaskesModel> listFaskesVak = faskesService.getListFaskes();
+        for(FaskesModel faskesM : listFaskesVak){
+            List<DokterPasienModel> tempFaskes = getAllByIdFaskes(faskesM.getIdFaskes());
+            for(DokterPasienModel dopas : tempFaskes){
+                result.add(dopas);
+            }
+
+        }
+        return result;
+    }
 
 
 
+    @Override
+    public List<List<String>> getResultByJenisVaksin(List<List<DokterPasienModel>> dokpas){
+        List<List<String>> result = new ArrayList<>();
+        for(int i=0 ; i < dokpas.size(); i++) {
+            for(DokterPasienModel dp: dokpas.get(i)) {
 
 
+                    PasienModel pasien = pasienService.getPasienById(dp.getPasienDP().getIdPasien());
+                    List<String> data = new ArrayList<>();
+
+                    data.add(pasien.getNamaPasien());
+                    data.add(pasien.getNik());
+                    data.add(pasien.getNomorTelepon());
+                    if(pasien.getJenisKelamin() == 0){
+                        data.add("Laki-Laki");
+                    } else{
+                        data.add("Perempuan");
+                    }
+                    data.add(dp.getBatchId());
+                    LocalDateTime waktuSuntik = dp.getWaktuSuntik();
+                    String suntik= "";
+                    suntik+=waktuSuntik .getDayOfWeek().toString().substring(0,1);
+                    suntik+=waktuSuntik .getDayOfWeek().toString().substring(1,3).toLowerCase();
+                    suntik+= "," + Integer.toString(waktuSuntik .getDayOfMonth());
+                    suntik+=" "+waktuSuntik .getMonth().toString().substring(0,1);
+                    suntik+=waktuSuntik.getMonth().toString().substring(1).toLowerCase();
+                    suntik+= " " + Integer.toString(waktuSuntik .getYear());
+                    suntik+= "," + String.format("%02d", waktuSuntik.getHour());
+                    suntik+=":" +String.format("%02d", waktuSuntik.getMinute());
+                    data.add(suntik);
+                    result.add(data);
+
+
+            }
+        }
+
+        return result;
+    }
 
 
 

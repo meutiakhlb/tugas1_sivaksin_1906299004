@@ -39,7 +39,7 @@ public class FaskesController {
     public String viewAllFaskes(Model model) {
         List<FaskesModel> faskes = faskesService.getListFaskes();
         model.addAttribute("listFaskes", faskes);
-        return "all-faskes";
+        return "all-faskes2";
     }
 
     @GetMapping("/faskes/add")
@@ -71,7 +71,7 @@ public class FaskesController {
         model.addAttribute("faskes", faskes);
         model.addAttribute("vaksin", vaksin);
         model.addAttribute("listPasien", faskes.getListFaskesPasien());
-        return "detail-faskes";
+        return "detail-faskes2";
     }
 
     @GetMapping("/faskes/ubah/{idFaskes}")
@@ -140,14 +140,21 @@ public class FaskesController {
     @PostMapping("/faskes/{idFaskes}/tambah/pasien")
     public String suksesAddPasienFaskes(@ModelAttribute DokterPasienModel dokterPasien,
                                         @PathVariable Long idFaskes, Model model) {
+
+
         FaskesModel faskes = faskesService.getFaskesById(idFaskes);
         PasienModel pasien = dokterPasien.getPasienDP();
-        faskes.getListFaskesPasien().add(pasien);
-        pasien.getListPasienFaskes().add(faskes);
-        dokterPasien.setBatchId(dokterPasienService.getBatchId(dokterPasien.getPasienDP()));
-        dokterPasienService.addDokterPasien(dokterPasien);
-        model.addAttribute("namaPasien", pasien.getNamaPasien());
-        model.addAttribute("namaFaskes",faskes.getNamaFaskes());
+        if(dokterPasien.getWaktuSuntik().getHour() < faskes.getJamTutup().getHour() && dokterPasien.getWaktuSuntik().getHour() > faskes.getJamMulai().getHour()){
+            faskes.getListFaskesPasien().add(pasien);
+            pasien.getListPasienFaskes().add(faskes);
+            dokterPasien.setBatchId(dokterPasienService.getBatchId(dokterPasien.getPasienDP()));
+            dokterPasienService.addDokterPasien(dokterPasien);
+            model.addAttribute("namaPasien", pasien.getNamaPasien());
+            model.addAttribute("namaFaskes",faskes.getNamaFaskes());
+        } else {
+            model.addAttribute("msg", "Tidak Bisa Melakukan Tambah Pasien ke Faskes, Lakukan di Jam Operasional ");
+        }
+
         return "add-pasienFaskes";
 
     }

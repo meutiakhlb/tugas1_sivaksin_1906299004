@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title> SIVAKSIN </title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<br><br><br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="container-fluid">
+            <div class="card" style="background-color: white; box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);">
+                <div class="card-header" style="text-align: center; font-weight: bold; color: white; background-color: #244c74;">
+                    <h4> Detail Faskes</h4>
+                </div>
+                <br>
+                <div class="card-body">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td>Nama Fasilitas Kesehatan</td>
+                            <td th:text="': ' + ${faskes.namaFaskes}">
+                        <tr>
+                        <tr>
+                            <td>Kuota</td>
+                            <td th:text="': ' + ${faskes.kuota}">
+                        </tr>
+                        <tr>
+                            <td>Provinsi</td>
+                            <td th:text="': ' + ${faskes.provinsi}">
+                        </tr>
+                        <tr>
+                            <td>Kabupaten</td>
+                            <td th:text="': ' + ${faskes.kabupaten}">
+                        </tr>
+                        <tr>
+                            <td>Jam Mulai</td>
+                            <td th:text="': ' + ${faskes.jamMulai}">
+                        </tr>
+                        <tr>
+                            <td>Jam Tutup</td>
+                            <td th:text="': ' + ${faskes.jamTutup}">
+                        </tr>
+                        <tr>
+                            <td>Jenis Vaksin</td>
+                            <td th:text="': ' + ${faskes.vaksin.getJenisVaksin()} + ' - ' + ${faskes.vaksin.getAsalNegara()} + ' - ' + ${faskes.vaksin.getEfikasi()}">
+                        </tr>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <div class="container-fluid">
+                <a class="btn btn-sm" style="text-align: center;background-color: #244c74; color: white;margin: 1%; padding-left: 3%;padding-right: 3%; padding: 15px; font-size: 100%" th:href="@{/faskes/}+${faskes.idFaskes}+@{/tambah/pasien}">Tambah Pasien</a>
+            </div>
+            <br>
+            <div class="container-fluid">
+                <div class="card" style="background-color: white; box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);">
+                    <div class="card-header" style="text-align: center; font-weight: bold; color: white; background-color: #244c74;">
+                        <h5> Daftar Pasien</h5>
+                    </div>
+                    <br>
+                    <div class="card-body">
+
+                            <table class="table">
+                                <thead style="text-align: center">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>NIK</th>
+                                    <th>Nomor Telepon</th>
+                                    <th>Jenis Kelamin</th>
+                                    <th>Tempat Lahir</th>
+                                    <th>Pekerjaan</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody style="text-align: center">
+                                <tr th:each="pasien, iteration: ${listPasien}">
+                                    <td th:text="${iteration.count}"></td>
+                                    <td th:text="${pasien.namaPasien}"></td>
+                                    <td th:text="${pasien.nik}"></td>
+                                    <td th:text="${pasien.nomorTelepon}"></td>
+                                    <td th:if="${pasien.jenisKelamin == 1}">Laki-Laki</td>
+                                    <td th:if="${pasien.jenisKelamin == 2}">Perempuan</td>
+                                    <td th:text="${pasien.tempatLahir}"></td>
+                                    <td th:text="${pasien.pekerjaan}"></td>
+                                    <td>
+                                        <a class="btn btn-sm" style="text-align: center;background-color: #244c74; color: white;" th:href="@{/pasien/} + ${pasien.idPasien}">Lihat</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-sm btn-dark" th:href="@{/pasien/ubah/} + ${pasien.idPasien}">Ubah</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <div class="container-fluid">
+                <div style="text-align: right">
+                    <a class="btn btn-sm" style="text-align: center;background-color: #244c74; color: white; padding: 1%; font-size: medium" th:href="@{/faskes}">Kembali</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="fragments/fragment :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title> SIVAKSIN </title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="container-fluid">
+    <br>
+    <a th:href="@{/faskes/add}" class="btn-sm" style="text-align: center; background-color:#244c74; color: white; margin: 1%;padding: 15px; padding-left: 3%; padding-right: 3%; font-size: 100%">
+        Tambah Faskes
+    </a>
+    <br>
+    <section>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" style="background-color: white; box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);">
+                    <div class="card-header" style="text-align: center; font-weight: bold; color: white; background-color: #244c74;">
+                        <h4> Daftar Faskes</h4>
+                    </div>
+                    <div class="card-body" style="overflow-x: auto">
+                        <table class="table">
+                            <thead style="background-color: #f5f5f5">
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Kuota</th>
+                                <th>Provinsi</th>
+                                <th>Kabupaten</th>
+                                <th>Jam Selesai</th>
+                                <th></th>
+                                <th>Action</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="faskes, iterationStatus: ${listFaskes}"
+                                th:style= "${iterationStatus.even} ? 'background-color:#f5f7fa'">
+                                <td th:text="${faskes.namaFaskes}"></td>
+                                <td th:text="${faskes.kuota}"></td>
+                                <td th:text="${faskes.provinsi}"></td>
+                                <td th:text="${faskes.kabupaten}"></td>
+                                <td th:text="'Jam Buka: ' + ${faskes.jamMulai}"></td>
+                                <td th:text="'Jam Selesai ' + ${faskes.jamTutup}"></td>
+
+                                <td>
+                                    <a class="btn btn-sm btn-primary" th:href="@{/faskes/} + ${faskes.idFaskes}">Lihat</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-info" th:href="@{/faskes/ubah/} + ${faskes.idFaskes}">Ubah</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-danger" th:href="@{/faskes/hapus/} + ${faskes.idFaskes}">Hapus</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<footer th:replace="fragments/fragment :: footer"></footer>
+</body>
+</html>

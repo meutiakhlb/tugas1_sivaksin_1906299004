@@ -26,5 +26,20 @@ public interface DokterPasienService {
 //
 //    List<DokterPasienModel> getFaskesBulanIni(List<DokterPasienModel> listDP);
 
+    List<DokterPasienModel> getListCariPasien(Long idFaskes);
+
+    List<DokterPasienModel> getAllByIdFaskes(Long idFaskes);
+
+    List<DokterPasienModel> findPasienByFaskes(FaskesModel faskes);
+
+//    List<List<String>> getListCariPasienFaskes(Long idFaskes);
+
+    List<DokterPasienModel> getListPasienDariVaksin(VaksinModel vaksin);
+
+    List<DokterPasienModel> getAllByIdPasien(Long idPasien);
+
+    List<List<String>>  getResultByJenisVaksin(List<List<DokterPasienModel>> dokpas);
+
+
 
 }

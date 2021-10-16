@@ -36,145 +36,153 @@ public class CariController {
     private DokterPasienService dokterPasienService;
 
     @GetMapping("/cari")
-    public String homeCari(Model model){return "cari-home";}
+    public String homeCari(Model model) {
+        return "cari-home";
+    }
 
     @RequestMapping(value = "/cari/faskes/vaksin", method = RequestMethod.GET)
-    public String cariFaskesByVaksin(Model model){
+    public String cariFaskesByVaksin(Model model) {
         List<VaksinModel> listVaksin = vaksinService.getListVaksin();
         List<FaskesModel> listFaskes = new ArrayList<>();
         model.addAttribute("listFaskes", listFaskes);
         model.addAttribute("listVaksin", listVaksin);
-        model.addAttribute("faskes",new FaskesModel());
-        return"cari-faskesVaksin";
+        model.addAttribute("faskes", new FaskesModel());
+        return "cari-faskes";
     }
 
 
-    @RequestMapping(value = "/cari/faskes/vaksin", method = RequestMethod.GET, params= {"namaVaksin"})
-    public String postCariFaskesByVaksinSubmit(@ModelAttribute FaskesModel faskes,  @RequestParam(required = false, value = "namaVaksin") String namaVaksin,Model model) {
+    @RequestMapping(value = "/cari/faskes/vaksin", method = RequestMethod.GET, params = {"namaVaksin"})
+    public String postCariFaskesByVaksinSubmit(@ModelAttribute FaskesModel faskes, @RequestParam(required = false, value = "namaVaksin") String namaVaksin, Model model) {
         List<VaksinModel> listVak = vaksinService.getListVaksin();
         model.addAttribute("listFaskes", faskesService.findFaskesByVaksin(namaVaksin));
         model.addAttribute("listVaksin", listVak);
         model.addAttribute("faskes", faskes);
-        return"cari-faskesVaksin";
+        return "cari-faskes";
     }
 
     @RequestMapping(value = "/cari/pasien", method = RequestMethod.GET)
     public String cariPasienKosong(Model model) {
-
+        List<FaskesModel> listFaskes = faskesService.getListFaskes();
         List<VaksinModel> listVaksin = vaksinService.getListVaksin();
-        model.addAttribute("listVaksin", listVaksin);
-
-        List <FaskesModel> listFaskes = faskesService.getListFaskes();
         model.addAttribute("listFaskes", listFaskes);
-
-        return "cari-pasienByVaksinFaskes";
+        model.addAttribute("listVaksin", listVaksin);
+        return "cari-pasien";
     }
 
     @RequestMapping(value="/cari/pasien", method=RequestMethod.GET, params= {"jenisVaksin","namaFaskes"})
-    public String cariPilot(
+    public String cariPasien(
             @RequestParam(required = false, value = "jenisVaksin") String jenisVaksin,
             @RequestParam(required = false,value = "namaFaskes") String namaFaskes,
-            @ModelAttribute PasienModel pasien,
             Model model){
-
-
-        List<FaskesModel> listFaskes = faskesService.findFaskesByNama(namaFaskes);
+        FaskesModel faskes = faskesService.getFaskesByNamaFaskes(namaFaskes);
+        VaksinModel vaksin = vaksinService.getVaksinByNama(jenisVaksin);
+        List<FaskesModel> listFaskes = faskesService.getListFaskes();
         List<VaksinModel> listVaksin = vaksinService.getListVaksin();
-        if (jenisVaksin != null && namaFaskes !=null) {
 
-            List<FaskesModel> listFaskesPasien = pasien.getListPasienFaskes();
-            List<String> hasil =  new ArrayList<>();
-            List<DokterPasienModel> dokterPasien = pasien.getListDokterPasien();
-            List<PasienModel> listPasien = pasienService.cariPasienByVaksinFaskes(jenisVaksin, namaFaskes, listFaskesPasien);
-            for(PasienModel pasienModel: listPasien) {
-                hasil.add(pasienModel.getNamaPasien());
-                hasil.add(pasienModel.getNik());
-                hasil.add(pasienModel.getNomorTelepon());
-                int gender = pasienModel.getJenisKelamin();
-                if(gender == 0) hasil.add("Laki-Laki");
-                else if (gender == 1) hasil.add("Perempuan");
+        if(faskes == null && vaksin == null ){
+            model.addAttribute("listFaskes", listFaskes);
+            model.addAttribute("listVaksin", listVaksin);
+            return "cari-pasien";
+        } else if(faskes == null){
+            List<DokterPasienModel> dp = dokterPasienService.getListPasienDariVaksin(vaksin);
+            List<List<String>> result =  new ArrayList<>();
 
-            }
+            for(DokterPasienModel dopas : dp){
+                List<String> data =  new ArrayList<>();
+                data.add(dopas.getPasienDP().getNamaPasien());
+                data.add(dopas.getPasienDP().getNik());
+                data.add(dopas.getPasienDP().getNomorTelepon());
+                if(dopas.getPasienDP().getJenisKelamin() == 0) {
+                    data.add("Perempuan");
+                } else {
+                    data.add("Laki-Laki");
+                }
+                data.add(dopas.getBatchId());
+                data.add(dokterPasienService.getWaktuSuntik(dopas.getWaktuSuntik()));
 
-            for(DokterPasienModel DP : dokterPasien){
-                hasil.add(DP.getBatchId());
-                LocalDateTime ws =  DP.getWaktuSuntik();
-                hasil.add(dokterPasienService.getWaktuSuntik(ws));
+                result.add(data);
             }
             model.addAttribute("listFaskes", listFaskes);
             model.addAttribute("listVaksin", listVaksin);
-            model.addAttribute("listPasien", hasil);
-            return "cari-pasienByVaksinFaskes";
-        }else if (namaFaskes ==null){
+            model.addAttribute("listPasien", result);
 
-            List<FaskesModel> listFaskesPasien = pasien.getListPasienFaskes();
-            List<String> hasil =  new ArrayList<>();
-            List<DokterPasienModel> dokterPasien = pasien.getListDokterPasien();
-            List<PasienModel> listPasien = pasienService.cariPasienVaksin(jenisVaksin,listFaskesPasien);
+            return "cari-pasien";
 
+        } else if (vaksin==null){
+            List<DokterPasienModel> dp = dokterPasienService.findPasienByFaskes(faskes);
+            List<List<String>> result =  new ArrayList<>();
 
-            for(PasienModel pasienModel: listPasien) {
-                hasil.add(pasienModel.getNamaPasien());
-                hasil.add(pasienModel.getNik());
-                hasil.add(pasienModel.getNomorTelepon());
-                int gender = pasienModel.getJenisKelamin();
-                if(gender == 0) hasil.add("Laki-Laki");
-                else if (gender == 1) hasil.add("Perempuan");
+            for(DokterPasienModel dopas : dp){
+                List<String> data =  new ArrayList<>();
+                data.add(dopas.getPasienDP().getNamaPasien());
+                data.add(dopas.getPasienDP().getNik());
+                data.add(dopas.getPasienDP().getNomorTelepon());
+                if(dopas.getPasienDP().getJenisKelamin() == 0) {
+                    data.add("Perempuan");
+                } else {
+                    data.add("Laki-Laki");
+                }
+                data.add(dopas.getBatchId());
+                data.add(dokterPasienService.getWaktuSuntik(dopas.getWaktuSuntik()));
 
-            }
-
-            for(DokterPasienModel DP : dokterPasien){
-                hasil.add(DP.getBatchId());
-                LocalDateTime ws =  DP.getWaktuSuntik();
-                hasil.add(dokterPasienService.getWaktuSuntik(ws));
+                result.add(data);
             }
             model.addAttribute("listFaskes", listFaskes);
             model.addAttribute("listVaksin", listVaksin);
-            model.addAttribute("listPasien", hasil);
-            return "cari-pilot";
-        }
-        else if (jenisVaksin == null ){
-
-            List<FaskesModel> listFaskesPasien = pasien.getListPasienFaskes();
-            List<String> hasil =  new ArrayList<>();
-            List<DokterPasienModel> dokterPasien = pasien.getListDokterPasien();
-            List<PasienModel> listPasien = pasienService.cariPasienFaskes(namaFaskes, listFaskesPasien);
-            for(PasienModel pasienModel: listPasien) {
-                hasil.add(pasienModel.getNamaPasien());
-                hasil.add(pasienModel.getNik());
-                hasil.add(pasienModel.getNomorTelepon());
-                int gender = pasienModel.getJenisKelamin();
-                if(gender == 0) hasil.add("Laki-Laki");
-                else if (gender == 1) hasil.add("Perempuan");
-
-            }
-
-            for(DokterPasienModel DP : dokterPasien){
-                hasil.add(DP.getBatchId());
-                LocalDateTime ws =  DP.getWaktuSuntik();
-                hasil.add(dokterPasienService.getWaktuSuntik(ws));
-            }
-            model.addAttribute("listFaskes", listFaskes);
-            model.addAttribute("listVaksin", listVaksin);
-            model.addAttribute("listPasien", hasil);
-            return "cari-pasienByVaksinFaskes";
+            model.addAttribute("listPasien", result);
+            return "cari-pasien";
         } else {
+            if(faskesService.terhubungFaskesVaksin(faskes,vaksin)){
+                List<DokterPasienModel> dp = dokterPasienService.getListCariPasien(faskes.getIdFaskes());
+                List<List<String>> result =  new ArrayList<>();
 
-            model.addAttribute("listFaskes", listFaskes);
-            model.addAttribute("listVaksin", listVaksin);
-            return "cari-pasienByVaksinFaskes";
+                for(DokterPasienModel dopas : dp){
+                    List<String> data =  new ArrayList<>();
+                    data.add(dopas.getPasienDP().getNamaPasien());
+                    data.add(dopas.getPasienDP().getNik());
+                    data.add(dopas.getPasienDP().getNomorTelepon());
+                    if(dopas.getPasienDP().getJenisKelamin() == 0) {
+                        data.add("Perempuan");
+                    } else {
+                        data.add("Laki-Laki");
+                    }
+                    data.add(dopas.getBatchId());
+                    data.add(dokterPasienService.getWaktuSuntik(dopas.getWaktuSuntik()));
+
+                    result.add(data);
+                }
+                model.addAttribute("listFaskes", listFaskes);
+                model.addAttribute("listVaksin", listVaksin);
+                model.addAttribute("listPasien", result);
+                return "cari-pasien";
+            } else {
+                List<DokterPasienModel> dp = new ArrayList<>();
+
+                model.addAttribute("listFaskes", listFaskes);
+                model.addAttribute("listVaksin", listVaksin);
+                model.addAttribute("listPasien", dp );
+                return "cari-pasien";
+            }
+
         }
-
     }
 
-//    @RequestMapping(value = "/cari/jumlah-pasien/bulan-ini", method = RequestMethod.GET)
-//    public String cariPilotBulanIni(Model model) {
-//
-//        List<DokterPasienModel> listDP= dokterPasienService.getDokterPasienList();
-//        List<DokterPasienModel> listDokpas = dokterPasienService.getFaskesBulanIni(listDP);
-//        List<FaskesModel> listFaskes = dokterPasienService.getListFaskes(listDokpas);
-//        model.addAttribute("listDokpas", );
-//
-//        return "cari-pilotbulanini";
-//    }
+    @GetMapping("/cari/jumlah-pasien/bulan-ini")
+    public String daftarJumlahPasien(
+            Model model
+    ) {
+        List<FaskesModel> listFaskes = faskesService.getListFaskes();
+        List<Integer> listJumlahPasien = faskesService.getSumPasienBulanIni(listFaskes);
+        model.addAttribute("listJumlahPasien", listJumlahPasien);
+        model.addAttribute("listFaskes", listFaskes);
+        return "cari-pasien-bulanini";
+    }
+
 }
+
+
+
+
+
+
+
