@@ -48,14 +48,14 @@ public class PasienServiceImpl implements PasienService {
 
     @Override
     public List<PasienModel> getPasienListBulanIni(List<PasienModel> listPasien) {
-        List<PasienModel> listUniquePasien = new ArrayList<>();
+        List<PasienModel> listJumlahPasien = new ArrayList<>();
         for (PasienModel pasien : listPasien) {
-            if (!listUniquePasien.contains(pasien)) {
-                listUniquePasien.add(pasien);
+            if (!listJumlahPasien.contains(pasien)) {
+                listJumlahPasien.add(pasien);
             } else {
             }
         }
-        return listUniquePasien;
+        return listJumlahPasien;
     }
 
     @Override

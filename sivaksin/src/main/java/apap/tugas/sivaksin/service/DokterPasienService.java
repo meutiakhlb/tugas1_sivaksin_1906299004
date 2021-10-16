@@ -30,15 +30,17 @@ public interface DokterPasienService {
 
     List<DokterPasienModel> getAllByIdFaskes(Long idFaskes);
 
-    List<DokterPasienModel> findPasienByFaskes(FaskesModel faskes);
+    List<DokterPasienModel> getListByVaksinFaskes(String namaVaksin, Long idFaskes);
+
+    List<DokterPasienModel> getListByVaksin(String jenisVaksin);
 
 //    List<List<String>> getListCariPasienFaskes(Long idFaskes);
 
-    List<DokterPasienModel> getListPasienDariVaksin(VaksinModel vaksin);
+//    List<DokterPasienModel> getListPasienDariVaksin(VaksinModel vaksin);
 
     List<DokterPasienModel> getAllByIdPasien(Long idPasien);
 
-    List<List<String>>  getResultByJenisVaksin(List<List<DokterPasienModel>> dokpas);
+//    List<List<String>>  getResultByJenisVaksin(List<List<DokterPasienModel>> dokpas);
 
 
 

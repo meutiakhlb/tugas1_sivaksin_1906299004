@@ -80,14 +80,16 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="pasien, iterationStatus : ${listPasien}">
+                            <tr th:each="dokpas, iterationStatus : ${listPasien}"
+                                th:class="${iterationStatus.even} ? 'bg-light'">
                                 <td th:text="${iterationStatus.count}"></td>
-                                <td th:text="${pasien[0]}"></td>
-                                <td th:text="${pasien[1]}"></td>
-                                <td th:text="${pasien[2]}"></td>
-                                <td th:text="${pasien[3]}"></td>
-                                <td th:text="${pasien[4]}"></td>
-                                <td th:text="${pasien[5]}"></td>
+                                <td th:text="${dokpas.pasienDP.getNamaPasien()}"></td>
+                                <td th:text="${dokpas.pasienDP.getNik()}"></td>
+                                <td th:text="${dokpas.pasienDP.getNomorTelepon()}"></td>
+                                <td th:if="${dokpas.pasienDP.getJenisKelamin()} == 0">Perempuan </td>
+                                <td th:if="${dokpas.pasienDP.getJenisKelamin()} == 1">Laki-Laki</td>
+                                <td th:text="${dokpas.batchId}"></td>
+                                <td th:text="${#temporals.day(dokpas.waktuSuntik)} + ' ' + ${#temporals.monthName(dokpas.waktuSuntik)} + ' ' + ${#temporals.year(dokpas.waktuSuntik)} + ', ' + ${#temporals.format(dokpas.waktuSuntik, 'HH:mm')}"></td>
                             </tr>
                             </tbody>
                         </table>

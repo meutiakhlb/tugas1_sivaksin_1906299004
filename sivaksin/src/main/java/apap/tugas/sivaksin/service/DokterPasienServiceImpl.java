@@ -109,75 +109,59 @@ public class DokterPasienServiceImpl implements DokterPasienService{
 
     }
 
+//    @Override
+//    public List<DokterPasienModel> getListPasienDariVaksin(VaksinModel vaksin){
+//        List<DokterPasienModel> result = new ArrayList<>();
+//        List<FaskesModel> listFaskesVak = faskesService.findFaskesByVaksin(vaksin.getJenisVaksin());
+//        for(FaskesModel faskes : listFaskesVak){
+//            List<DokterPasienModel> tempFaskes = getAllByIdFaskes(faskes.getIdFaskes());
+//            for(DokterPasienModel dopas : tempFaskes){
+//                result.add(dopas);
+//            }
+//
+//        }
+//        return result;
+//    }
+
+//    @Override
+//    public List<DokterPasienModel> findPasienByFaskes(FaskesModel faskes){
+//        List<DokterPasienModel> result = new ArrayList<>();
+//        List<FaskesModel> listFaskesVak = faskesService.getListFaskes();
+//        for(FaskesModel faskesM : listFaskesVak){
+//            List<DokterPasienModel> tempFaskes = getAllByIdFaskes(faskesM.getIdFaskes());
+//            for(DokterPasienModel dopas : tempFaskes){
+//                result.add(dopas);
+//            }
+//
+//        }
+//        return result;
+//    }
+
+
     @Override
-    public List<DokterPasienModel> getListPasienDariVaksin(VaksinModel vaksin){
+    public List<DokterPasienModel> getListByVaksinFaskes(String namaVaksin, Long idFaskes) {
         List<DokterPasienModel> result = new ArrayList<>();
-        List<FaskesModel> listFaskesVak = faskesService.findFaskesByVaksin(vaksin.getJenisVaksin());
-        for(FaskesModel faskes : listFaskesVak){
-            List<DokterPasienModel> tempFaskes = getAllByIdFaskes(faskes.getIdFaskes());
-            for(DokterPasienModel dopas : tempFaskes){
-                result.add(dopas);
+        for (DokterPasienModel dokpas:getDokterPasienList()){
+            if (dokpas.getIdFaskes() == idFaskes) {
+                if (faskesService.getFaskesById(dokpas.getIdFaskes()).getVaksin().getJenisVaksin().equals(namaVaksin)) {
+                    result.add(dokpas);
+                }
             }
-
         }
         return result;
     }
 
     @Override
-    public List<DokterPasienModel> findPasienByFaskes(FaskesModel faskes){
-        List<DokterPasienModel> result = new ArrayList<>();
-        List<FaskesModel> listFaskesVak = faskesService.getListFaskes();
-        for(FaskesModel faskesM : listFaskesVak){
-            List<DokterPasienModel> tempFaskes = getAllByIdFaskes(faskesM.getIdFaskes());
-            for(DokterPasienModel dopas : tempFaskes){
-                result.add(dopas);
-            }
-
-        }
-        return result;
-    }
-
-
-
-    @Override
-    public List<List<String>> getResultByJenisVaksin(List<List<DokterPasienModel>> dokpas){
-        List<List<String>> result = new ArrayList<>();
-        for(int i=0 ; i < dokpas.size(); i++) {
-            for(DokterPasienModel dp: dokpas.get(i)) {
-
-
-                    PasienModel pasien = pasienService.getPasienById(dp.getPasienDP().getIdPasien());
-                    List<String> data = new ArrayList<>();
-
-                    data.add(pasien.getNamaPasien());
-                    data.add(pasien.getNik());
-                    data.add(pasien.getNomorTelepon());
-                    if(pasien.getJenisKelamin() == 0){
-                        data.add("Laki-Laki");
-                    } else{
-                        data.add("Perempuan");
-                    }
-                    data.add(dp.getBatchId());
-                    LocalDateTime waktuSuntik = dp.getWaktuSuntik();
-                    String suntik= "";
-                    suntik+=waktuSuntik .getDayOfWeek().toString().substring(0,1);
-                    suntik+=waktuSuntik .getDayOfWeek().toString().substring(1,3).toLowerCase();
-                    suntik+= "," + Integer.toString(waktuSuntik .getDayOfMonth());
-                    suntik+=" "+waktuSuntik .getMonth().toString().substring(0,1);
-                    suntik+=waktuSuntik.getMonth().toString().substring(1).toLowerCase();
-                    suntik+= " " + Integer.toString(waktuSuntik .getYear());
-                    suntik+= "," + String.format("%02d", waktuSuntik.getHour());
-                    suntik+=":" +String.format("%02d", waktuSuntik.getMinute());
-                    data.add(suntik);
-                    result.add(data);
-
+    public List<DokterPasienModel> getListByVaksin(String jenisVaksin){
+        List<DokterPasienModel> dokpasAll = new ArrayList<>();
+        for (DokterPasienModel dokpas:getDokterPasienList()){
+            if (faskesService.getFaskesById(dokpas.getIdFaskes()).getVaksin().getJenisVaksin().equals(jenisVaksin)) {
+                dokpasAll.add(dokpas);
 
             }
         }
-
-        return result;
+        return dokpasAll;
     }
-
 
 
 }

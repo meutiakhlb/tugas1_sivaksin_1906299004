@@ -66,12 +66,15 @@ public class FaskesController {
             @PathVariable Long idFaskes,
             Model model
     ) {
+
         FaskesModel faskes = faskesService.getFaskesById(idFaskes);
         VaksinModel vaksin = vaksinService.getVaksinById(faskes.getVaksin().getIdVaksin());
+
         model.addAttribute("faskes", faskes);
         model.addAttribute("vaksin", vaksin);
         model.addAttribute("listPasien", faskes.getListFaskesPasien());
         return "detail-faskes2";
+
     }
 
     @GetMapping("/faskes/ubah/{idFaskes}")
