@@ -63,45 +63,36 @@ public class FaskesServiceImpl implements FaskesService{
         }
 
 
-
     }
 
     @Override
     public List<Integer> getSumPasienBulanIni(List<FaskesModel> listFaskes) {
         List<Integer> listJumlahPasien = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
-        int month = cal.get(Calendar.MONTH) + 1;
-        int year = cal.get(Calendar.YEAR);
-        int jumlahPasien = 0;
+        int bulan = cal.get(Calendar.MONTH) + 1;
+        int tahun = cal.get(Calendar.YEAR);
+        int sumPasien = 0;
 
         for (FaskesModel faskes:listFaskes) {
             List<PasienModel> listPasien = pasienService.getPasienListBulanIni(faskes.getListFaskesPasien());
             for (PasienModel pasien:listPasien) {
-                List<DokterPasienModel> listDokpas = pasien.getListDokterPasien();
-                for (DokterPasienModel dp :listDokpas) {
-                    if (dp.getWaktuSuntik().getMonthValue() == month && dp.getWaktuSuntik().getYear() == year) {
-                        jumlahPasien++;
+                List<DokterPasienModel> dokpas = pasien.getListDokterPasien();
+                for (DokterPasienModel dp : dokpas) {
+                    if (dp.getWaktuSuntik().getMonthValue() == bulan && dp.getWaktuSuntik().getYear() == tahun) {
+                        sumPasien++;
                         break;
                     }
                 }
 
 
             }
-            listJumlahPasien.add(jumlahPasien);
-            jumlahPasien = 0;
+            listJumlahPasien.add(sumPasien);
+            sumPasien = 0;
         }
-        System.out.println(Arrays.deepToString(listFaskes.toArray()));
-        System.out.println(Arrays.deepToString(listJumlahPasien.toArray()));
 
         return listJumlahPasien;
     }
 
-//    @Override
-//    public FaskesModel getFaskesByNama(String namaFaskes) {
-//        Optional<FaskesModel> faskes = FaskesDb.findByNamaFaskes(namaFaskes);
-//        if(faskes.isPresent()) return faskes.get();
-//        else return null;
-//    }
 
     @Override
     public FaskesModel updateFaskes(FaskesModel Faskes){
